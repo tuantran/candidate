@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+    <New class="org.mortbay.jetty.plus.naming.Resource">
+        <Arg>jdbc/DSCandidate</Arg>
+        <Arg>
+            <New class="com.mchange.v2.c3p0.ComboPooledDataSource">
+                <Set name="DriverClass">com.mysql.jdbc.Driver</Set>
+                <Set name="jdbcUrl">jdbc:mysql://localhost/candidate?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true</Set>
+                <Set name="User">candidate</Set>
+                <Set name="Password">pingu123</Set>
+                <Set name="maxIdleTime">3600</Set>
+                <!-- Allow to fail fast when cannot connect to database -->
+                <Set name="checkoutTimeout">10000</Set>
+            </New>
+        </Arg>
+    </New>
+</Configure>

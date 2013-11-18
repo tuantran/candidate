@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         metadata-complete="true"
+         version="2.5">
+
+    <display-name>candidate</display-name>
+    <description>Main webapp element for Candidate</description>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:/META-INF/apiproperties-applicationContext.xml
+            classpath:candidate-applicationContext.xml
+            classpath:candidate-jdbc.xml
+        </param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>org.mortbay.jetty.servlet.SessionURL</param-name>
+        <param-value>none</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>charsetFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>headerFilter</filter-name>
+        <filter-class>no.api.pantheon.web.filter.HttpTraceFilter</filter-class>
+        <init-param>
+            <param-name>webappName</param-name>
+            <param-value>candidate</param-value>
+        </init-param>
+        <init-param>
+            <param-name>doExtraLogging</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>doNdc</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowCookies</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>defaultCacheChannelMaxAge</param-name>
+            <param-value>0</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>charsetFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>headerFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <description>Candidate</description>
+        <servlet-name>candidate</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>98</load-on-startup>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>candidate</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>candidate</servlet-name>
+        <url-pattern>*.json</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>candidate</servlet-name>
+        <url-pattern>*.image</url-pattern>
+    </servlet-mapping>
+
+    <resource-ref>
+        <description>Candidate Datasource</description>
+        <res-ref-name>jdbc/DSCandidate</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>

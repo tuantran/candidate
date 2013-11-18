@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	<changeSet author="tuan" id="baseline-1">
+		<createTable tableName="candidate">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="uuid" type="VARCHAR(36)">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="VARCHAR(128)">
+				<constraints nullable="false" />
+			</column>
+			<column name="age" type="INT">
+				<constraints nullable="false" />
+			</column>
+			<column name="gender" type="VARCHAR(1)">
+				<constraints nullable="false" />
+			</column>
+			<column name="createdtime" type="NUMERIC(15)">
+				<constraints nullable="false" />
+			</column>
+			<column name="modifiedtime" type="NUMERIC(15)">
+				<constraints nullable="false" />
+			</column>			
+		</createTable>
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB  CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+		<!-- for fix problem on this issue : https://liquibase.jira.com/browse/CORE-1158 -->
+		<modifySql dbms="hsqldb">
+			<replace replace="system" with="SYSTEM" />
+		</modifySql>
+		<!-- end -->
+	</changeSet>
+
+	<changeSet author="tuan" id="candidateConstraintAndIndex">
+
+		<addUniqueConstraint tableName="candidate"
+			columnNames="uuid" />
+
+	</changeSet>
+
+</databaseChangeLog>

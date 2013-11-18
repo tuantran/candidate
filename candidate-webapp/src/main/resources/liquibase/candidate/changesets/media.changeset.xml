@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	<changeSet author="tuan" id="media">
+		<createTable tableName="candidatemedia">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="candidate_id" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="mediablob" type="LONGBLOB">
+				<constraints nullable="false" />
+			</column>
+			<column name="modifiedtime" type="numeric(15)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB  CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+		<!-- for fix problem on this issue : https://liquibase.jira.com/browse/CORE-1158 -->
+		<modifySql dbms="hsqldb">
+			<replace replace="system" with="SYSTEM" />
+		</modifySql>
+		<!-- end -->
+	</changeSet>
+
+	<changeSet author="tuan" id="candidateConstraintAndIndex">
+
+		<addForeignKeyConstraint baseTableName="candidatemedia"
+			baseColumnNames="candidate_id" constraintName="candidate_media_ibfk_1"
+			referencedTableName="candidate" referencedColumnNames="id" deferrable="false"
+			initiallyDeferred="false" onUpdate="CASCADE" onDelete="CASCADE" />
+
+		<createIndex tableName="candidatemedia" indexName="index_candidatemedia_candidate_id">
+			<column name="candidate_id" />
+		</createIndex>
+	</changeSet>
+
+</databaseChangeLog>

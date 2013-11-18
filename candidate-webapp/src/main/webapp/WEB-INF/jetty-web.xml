@@ -1,0 +1,24 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+
+<!--
+This is the jetty specific web application configuration file.  When starting
+a Web Application, the WEB-INF/web-jetty-web.xml file is looked for and if found, treated
+as a org.mortbay.xml.XmlConfiguration file and is applied to the
+org.mortbay.jetty.servlet.WebApplicationContext object
+-->
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+    <Call class="org.mortbay.log.Log" name="debug"><Arg>executing jetty-web.xml</Arg></Call>
+    <Set name="contextPath">/candidate</Set>
+    <Get name="sessionHandler">
+        <Get name="sessionManager">
+            <Set name="usingCookies" type="boolean">false</Set>
+        </Get>
+    </Get>
+    <!-- Director-manager posts resource using x-www-form-urlencoded
+        and Jetty defaults this Form POST to not be exceed 200000 bytes,
+         to fix this try reading this answer [http://stackoverflow.com/questions/3861455/form-too-large-exception],
+         And we first attempt 10MB for now, should be enough
+    -->
+    <Set name="maxFormContentSize" type="int">10000000</Set>
+</Configure>
