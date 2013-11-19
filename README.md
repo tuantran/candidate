@@ -6,8 +6,7 @@ Requirements:
   2. Maven 3.0.x
   3. Mysql 5.5.x
 
-Setup
-=====
+## Setup
 
 Database:
 
