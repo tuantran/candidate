@@ -18,10 +18,13 @@ Database:
     FLUSH PRIVILEGES;
     /quit
 
-Running:
+Running candidate-webapp:
 
     mvn clean install
     cd candidate-webapp
     mvn jetty:run
+    # With a browser.
+    http://localhost:10047/candidate/
+    
 
 
