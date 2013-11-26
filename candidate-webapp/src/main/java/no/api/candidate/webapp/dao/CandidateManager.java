@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import no.api.candidate.webapp.model.CandidateModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CandidateManager {
     
@@ -36,4 +39,15 @@ public class CandidateManager {
         log.debug("Loading candidate from database uuid: "+uuid);
         return candidateDAO.loadByUuid(uuid);
     }
+    /*
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<CandidateModel> loadAll() {
+        log.debug("Loading all candidates from database");
+        List<CandidateModel> candidates = new ArrayList<CandidateModel>();
+        candidates=candidateDAO.loadAll();
+        return candidates;
+    }
+    */
+
+
 }

@@ -28,13 +28,20 @@
         <br />
 
         <h3>1. Saving</h3>
-        <p>
+        <!--<p>
             To register a Candidate use the <a
                 href="http://siam.dev.abctech-thailand.com/candidate/rest/candidateService/save.json">SAVE</a>
             JSON webservice <br /> The function accepts a JSON object over HTTP
             POST, and save the candidate to database. <br /> <br />
             Save requires following fields in a JSON object
-        </p>
+        </p> -->
+        <p>
+                    To register a Candidate use the <a
+                        href="ttp://siam.dev.abctech-thailand.com/candidate/api/public/v1/save">SAVE</a>
+                    JSON webservice <br /> The function accepts a JSON object over HTTP
+                    POST, and save the candidate to database. <br /> <br />
+                    Save requires following fields in a JSON object
+                </p>
         <table>
             <tr>
                 <th>Field</th>
@@ -57,7 +64,7 @@
             The actual request might look like:
         </p>
 <pre>
-POST /candidate/rest/candidateService/save.json HTTP/1.1
+POST /candidate/api/public/v1/save HTTP/1.1
 Host: siam.dev.abctech-thailand.com
 Content-Type: application/json
 
@@ -67,7 +74,7 @@ Content-Type: application/json
         <h3>2. Loading</h3>
         <p>
             To load a Candidate, use the <a
-                href="http://siam.dev.abctech-thailand.com/candidate/rest/candidateService/load/{uuid}.json">LOAD</a>
+                href="http://siam.dev.abctech-thailand.com/candidate/api/public/v1/load/json/{uuid}">LOAD</a>
             JSON webservice <br /> The function will fetch from database using
             the uuid to lookup the candidate.<br /> <br />
         </p>
@@ -75,7 +82,7 @@ Content-Type: application/json
             The actual request might look like:
         </p>
 <pre>
-GET /candidate/rest/candidateService/load/fa0fac6b-c166-43ce-bb64-28120cde4183.json HTTP/1.1
+GET /candidate/api/public/v1/load/json/fa0fac6b-c166-43ce-bb64-28120cde4183.json HTTP/1.1
 HOST: siam.dev.abctech-thailand.com
 </pre>
         <p>
@@ -145,7 +152,7 @@ HOST: siam.dev.abctech-thailand.com
         <h3>3. Uploading picture</h3>
         <p>
             To upload a picture to the candidate, use the following service<a
-                href="http://siam.dev.abctech-thailand.com/candidate/rest/candidateService/upload/image/{uuid}.json">Upload
+                href="http://siam.dev.abctech-thailand.com/candidate/api/public/v1/upload/image/{uuid}">Upload
             image</a> with HTTP PUT<br /> The function accepts a json object
             containing the image in base64 encoded. <br /> <br />
             And please only upload small portrait picture less than 100KB. :) <br/><br/>
@@ -169,7 +176,7 @@ HOST: siam.dev.abctech-thailand.com
             The actual request might look like:
         </p>
 <pre>
-PUT /candidate/rest/candidateService/upload/image/fdb81038-c17d-4520-ad5a-d2b385eb3ad9.json HTTP/1.1
+PUT /candidate/api/public/v1/upload/image/fdb81038-c17d-4520-ad5a-d2b385eb3ad9 HTTP/1.1
 Host: siam.dev.abctech-thailand.com
 Content-Type: application/json
 

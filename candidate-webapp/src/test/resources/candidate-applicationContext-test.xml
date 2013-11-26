@@ -12,6 +12,7 @@
 
     <import resource="classpath:/META-INF/apiproperties-test-applicationContext.xml"/>
 
+
     <!-- Adding annotation support -->
     <mvc:annotation-driven/>
 
@@ -26,5 +27,6 @@
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+
 
 </beans>

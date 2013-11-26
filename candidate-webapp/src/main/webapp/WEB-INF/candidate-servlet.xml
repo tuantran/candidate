@@ -7,4 +7,5 @@
 
     <!-- Should be empty, any bean definition can be put in main spring configuration -->
 
+
 </beans>

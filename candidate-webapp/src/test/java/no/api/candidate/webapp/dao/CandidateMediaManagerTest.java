@@ -14,7 +14,7 @@ public class CandidateMediaManagerTest extends ATestDAOManager {
 	
 	@Autowired
 	private CandidateManager candidateManager;
-	
+
 	@Test
 	public void testCandidateMediaDAO() {
         CandidateModel candidate = new CandidateModel();
@@ -36,4 +36,5 @@ public class CandidateMediaManagerTest extends ATestDAOManager {
         cm = candidateMediaManager.save(cm);
         Assert.assertNotEquals("TEST",new String(cm.getMedia()));
 	}
+
 }

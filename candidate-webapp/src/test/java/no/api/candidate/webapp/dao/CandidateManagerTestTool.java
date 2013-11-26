@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 public class CandidateManagerTestTool {
 
+
     public static CandidateModel createCandidate(Long id) {
         CandidateModel candidate = new CandidateModel();
         candidate.setAge(10);
@@ -30,4 +31,5 @@ public class CandidateManagerTestTool {
     	candidateMedia.setMedia("SOME PICTURE HERE".getBytes());
     	return candidateMedia;
     }
+
 }
