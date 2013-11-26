@@ -70,6 +70,15 @@ public class CandidateDAO {
         	return null;
         }
     }
+    public Long delete(Long id) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("DELETE FROM ");
+        sql.append(TABLE_NAME);
+        sql.append(" WHERE id=?");
+        log.debug("Executing sql: "+sql.toString());
+        jdbcTemplate.update(sql.toString(),id);
+        return id;
+    }
 
     public CandidateModel loadByUuid(String uuid) {
         StringBuffer sql = new StringBuffer();
@@ -88,6 +97,17 @@ public class CandidateDAO {
         	return null;
         }
     }
+
+    public String deleteByUuid(String uuid) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("DELETE FROM ");
+        sql.append(TABLE_NAME);
+        sql.append(" WHERE uuid=?");
+        log.debug("Executing sql: "+sql.toString());
+        jdbcTemplate.update(sql.toString(),uuid);
+        return uuid;
+    }
+
    /* public List<CandidateModel> loadAll() {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
@@ -154,6 +174,7 @@ public class CandidateDAO {
                 candidateModel.getAge(), candidateModel.getGender(), candidateModel.getCreatedTime().getMillis(),candidateModel.getModifiedTime().getMillis(), candidateModel.getId());
         return candidateModel;
     }
+
 
     private static String getColumns(int i, boolean forUpdate) {
         StringBuffer sql = new StringBuffer();    

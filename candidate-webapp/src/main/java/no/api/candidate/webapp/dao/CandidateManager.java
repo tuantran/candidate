@@ -27,6 +27,17 @@ public class CandidateManager {
         log.debug("Saving candidate: "+candidate.getName());
        return candidateDAO.save(candidate);
     }
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public Long delete(Long id){
+        log.debug("Delete candidate with database id: "+id);
+        return candidateDAO.delete(id);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public String deleteByUuid(String uuid){
+        log.debug("Delete candidate with database uuid: "+uuid);
+        return candidateDAO.deleteByUuid(uuid);
+    }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public CandidateModel load(Long id){

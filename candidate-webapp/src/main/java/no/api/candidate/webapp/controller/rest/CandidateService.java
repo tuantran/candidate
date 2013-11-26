@@ -101,6 +101,28 @@ public class CandidateService {
         return json;
     }
 
+    @RequestMapping(value="/delete/{uuid}",method = RequestMethod.GET,produces="application/json")
+    @ResponseBody
+    public String deleteCandidate(@PathVariable String uuid) throws IOException {
+
+        String deletedUuid = candidateManager.deleteByUuid(uuid);
+
+        CandidateModel candidateModel = candidateManager.loadByUuid(deletedUuid);
+        CandidateTransport candidateTransport = new CandidateTransport();
+        String json= "";
+        if (candidateModel==null) {
+            candidateTransport.setStatus(-1);
+            candidateTransport.setErrorCode(-2);
+            candidateTransport.setErrorMessage("Candidate does not exist");
+            json = candidateTransportMapper.convertToJsonString(candidateTransport);
+            return json;
+        }
+        candidateTransport = candidateTransportMapper.fromCandidateModel(candidateModel);
+        json = candidateTransportMapper.convertToJsonString(candidateTransport);
+
+        return json;
+    }
+
     @RequestMapping(value="/load/xml/{uuid}",method = RequestMethod.GET, produces="application/xml")
     @ResponseBody
     public String loadXMLCandidate(@PathVariable String uuid) throws IOException {

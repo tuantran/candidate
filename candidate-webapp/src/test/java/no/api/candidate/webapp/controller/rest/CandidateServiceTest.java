@@ -141,9 +141,6 @@ public class CandidateServiceTest {
         Assert.assertNull(c24.getName());
         Assert.assertNull(c24.getAge());
 
-
-
-
         // load xml from rest
         result = mockMvc
                 .perform(
@@ -186,6 +183,20 @@ public class CandidateServiceTest {
         Assert.assertNull(c26.getName());
         Assert.assertNull(c26.getAge());
 
+
+
+        // delete from rest by uuid
+        result = mockMvc
+                .perform(
+                        get(
+                                "/delete/" + c1.getUuid()).accept(
+                                MediaType.APPLICATION_JSON)).andDo(print())
+                .andReturn();
+        json = result.getResponse().getContentAsString();
+
+        CandidateTransport c27 = mapper
+                .readValue(json, CandidateTransport.class);
+        Assert.assertNull(c27.getUuid());
 
 
 		// garbage to json rest

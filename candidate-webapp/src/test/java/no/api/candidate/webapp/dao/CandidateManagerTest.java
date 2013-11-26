@@ -28,7 +28,7 @@ public class CandidateManagerTest extends ATestDAOManager {
         Assert.assertNotNull(candidate);
         Long id = candidate.getId();
         String uuid = candidate.getUuid();
-     /*   //load
+       //load
         candidate = candidateManager.loadByUuid(uuid);
         Assert.assertEquals(id, candidate.getId());
         Assert.assertEquals("M", candidate.getGender());
@@ -44,12 +44,20 @@ public class CandidateManagerTest extends ATestDAOManager {
         Assert.assertEquals("Tester test", candidate.getName());
         Assert.assertEquals("10", candidate.getAge().toString());
         Assert.assertEquals(uuid,candidate.getUuid());
-          */
+
+        //delete
+        String deletedUuid=candidateManager.deleteByUuid(candidate.getUuid());
+        candidate = candidateManager.loadByUuid(deletedUuid);
+        Assert.assertNull(candidate);
+        System.out.println("candidate: "+candidate);
+
         //load all
      //   List <CandidateModel>candidates=new ArrayList<CandidateModel>();
      //   candidates= candidateManager.loadAll();
 
     //    System.out.println("candidate id:"+candidates.get(0).getId());
+
+
     }
 
 }
