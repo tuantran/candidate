@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.xml.bind.DatatypeConverter;
 
+import com.wordnik.swagger.annotations.ApiOperation;
 import no.api.candidate.webapp.dao.CandidateManager;
 import no.api.candidate.webapp.dao.CandidateMediaManager;
 import no.api.candidate.webapp.model.CandidateMediaModel;
@@ -25,9 +26,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.wordnik.swagger.annotations.Api;
 
 @Controller
-
+@Api(value="", description="Candidate Service Operation")
 public class CandidateService {
 
 	private static final Logger log = LoggerFactory.getLogger(CandidateService.class);
@@ -43,7 +45,8 @@ public class CandidateService {
     @Autowired
     private CandidateMediaTransportMapper candidateMediaTransportMapper;
 
-    @RequestMapping(value="/save",method = RequestMethod.POST, produces="application/json", consumes="application/json")
+    @RequestMapping(value="/candidate",method = RequestMethod.POST, produces="application/json", consumes="application/json")
+    @ApiOperation(value = "CREATE a new candidate with JSON format")
     @ResponseBody
     public String saveCandidateFromJSON(@RequestBody CandidateTransport candidateTransport) throws IOException {
     	log.info("Saving candidate: {}", candidateTransport.getName());
@@ -64,7 +67,8 @@ public class CandidateService {
         return json;
     }
 
-    @RequestMapping(value="/save",method = RequestMethod.POST, produces="application/json", consumes="application/xml")
+    @RequestMapping(value="/candidate",method = RequestMethod.POST, produces="application/json", consumes="application/xml")
+    @ApiOperation(value = "CREATE a new candidate with XML format")
     @ResponseBody
     public String saveCandidateFromXML(@RequestBody CandidateTransport candidateTransport) throws IOException {
         log.info("Saving candidate: {}", candidateTransport.getName());
@@ -81,7 +85,11 @@ public class CandidateService {
         return json;
     }
 
-    @RequestMapping(value="/load/json/{uuid}",method = RequestMethod.GET, produces="application/json")
+
+
+
+    @RequestMapping(value="/candidate/{uuid}",method = RequestMethod.GET, produces="application/json")
+    @ApiOperation(value = "READ candidate in JSON format by using UUID")
     @ResponseBody
     public String loadCandidate(@PathVariable String uuid) throws IOException {
         CandidateModel candidateModel = candidateManager.loadByUuid(uuid);
@@ -101,7 +109,28 @@ public class CandidateService {
         return json;
     }
 
-    @RequestMapping(value="/delete/{uuid}",method = RequestMethod.GET,produces="application/json")
+    @RequestMapping(value="/candidate/{uuid}",method = RequestMethod.GET, produces="application/xml")
+    @ApiOperation(value = "READ candidate in XML format by using UUID")
+    @ResponseBody
+    public String loadXMLCandidate(@PathVariable String uuid) throws IOException {
+        CandidateModel candidateModel = candidateManager.loadByUuid(uuid);
+        CandidateTransport candidateTransport = new CandidateTransport();
+        String xml= "";
+        if (candidateModel==null) {
+            candidateTransport.setStatus(-1);
+            candidateTransport.setErrorCode(-2);
+            candidateTransport.setErrorMessage("Candidate does not exist");
+            xml = candidateTransportMapper.convertToXML(candidateTransport);
+            return xml;
+        }
+        candidateTransport = candidateTransportMapper.fromCandidateModel(candidateModel);
+        xml = candidateTransportMapper.convertToXML(candidateTransport);
+
+        return xml;
+    }
+
+    @RequestMapping(value="/candidate/{uuid}",method = RequestMethod.DELETE,produces="application/json")
+    @ApiOperation(value = "DELETE candidate by using UUID")
     @ResponseBody
     public String deleteCandidate(@PathVariable String uuid) throws IOException {
 
@@ -123,24 +152,6 @@ public class CandidateService {
         return json;
     }
 
-    @RequestMapping(value="/load/xml/{uuid}",method = RequestMethod.GET, produces="application/xml")
-    @ResponseBody
-    public String loadXMLCandidate(@PathVariable String uuid) throws IOException {
-        CandidateModel candidateModel = candidateManager.loadByUuid(uuid);
-        CandidateTransport candidateTransport = new CandidateTransport();
-        String xml= "";
-        if (candidateModel==null) {
-            candidateTransport.setStatus(-1);
-            candidateTransport.setErrorCode(-2);
-            candidateTransport.setErrorMessage("Candidate does not exist");
-            xml = candidateTransportMapper.convertToXML(candidateTransport);
-            return xml;
-        }
-        candidateTransport = candidateTransportMapper.fromCandidateModel(candidateModel);
-        xml = candidateTransportMapper.convertToXML(candidateTransport);
-
-        return xml;
-    }
 
     /*
     @RequestMapping(value="/list",method = RequestMethod.GET, produces="application/json")
@@ -159,7 +170,9 @@ public class CandidateService {
         return json;
     }
     */
-    @RequestMapping(value="/query/json/{uuid}",method=RequestMethod.GET,produces="application/json")
+
+    @RequestMapping(value="/candidate/{uuid}",params ={"fields"},method=RequestMethod.GET,produces="application/json")
+    @ApiOperation(value = "READ partial responses of candidate in JSON format by using UUID")
     @ResponseBody
     public String loadCandidateFilter(@PathVariable String uuid,@RequestParam("fields") String fields) throws IOException {
         CandidateModel candidateModel = candidateManager.loadByUuid(uuid);
@@ -178,7 +191,9 @@ public class CandidateService {
 
         return json;
     }
-    @RequestMapping(value="/query/xml/{uuid}",method=RequestMethod.GET,produces="application/xml")
+
+    @RequestMapping(value="/candidate/{uuid}",params ={"fields"},method=RequestMethod.GET,produces="application/xml")
+    @ApiOperation(value = "READ partial responses of candidate in XML format by using UUID")
     @ResponseBody
     public String loadXMLCandidateFilter(@PathVariable String uuid,@RequestParam("fields") String fields) throws IOException {
         CandidateModel candidateModel = candidateManager.loadByUuid(uuid);
@@ -197,7 +212,8 @@ public class CandidateService {
         return xml;
     }
 
-    @RequestMapping(value="/upload/image/{uuid}",method = RequestMethod.PUT, produces="application/json", consumes="application/json")
+    @RequestMapping(value="/candidate/{uuid}/image",method = RequestMethod.PUT, produces="application/json", consumes="application/json")
+    @ApiOperation(value = "UPDATE candidate image")
     @ResponseBody
     public CandidateMediaTransport uploadImageCandidate(@PathVariable String uuid, @RequestBody CandidateMediaTransport candidateMediaTransport) {
     	if (candidateMediaTransport.getUuid()==null || candidateMediaTransport.getImageBase64()==null) {
@@ -224,5 +240,6 @@ public class CandidateService {
         return candidateMediaTransportMapper.fromCandidateMediaModel(candidateMediaModel);
         
     }
+
 
 }

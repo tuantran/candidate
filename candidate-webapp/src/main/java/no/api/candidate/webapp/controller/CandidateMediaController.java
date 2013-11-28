@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import no.api.candidate.webapp.dao.CandidateManager;
 import no.api.candidate.webapp.dao.CandidateMediaManager;
 import no.api.candidate.webapp.model.CandidateMediaModel;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@Api(value="", description="View Candidate Photo")
 public class CandidateMediaController {
 
 	@Autowired
@@ -23,7 +26,8 @@ public class CandidateMediaController {
 	@Autowired
 	private CandidateManager candidateManager;
 	
-	@RequestMapping("/image/{lastModifiedTime}/{uuid}.image")
+	@RequestMapping("/candidate/{uuid}/image/{lastModifiedTime}")
+    @ApiOperation(value = "View candidate image")
 	public String loadMedia(HttpServletResponse response,
 			@PathVariable String uuid, @PathVariable Long lastModifiedTime) throws IOException {
 		CandidateModel candidate = candidateManager.loadByUuid(uuid);

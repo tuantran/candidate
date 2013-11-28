@@ -86,10 +86,9 @@
         <servlet-name>candidate</servlet-name>
         <url-pattern>*.html</url-pattern>
         <!--<url-pattern>*.json</url-pattern>-->
-        <url-pattern>*.image</url-pattern>
+       <!-- <url-pattern>*.image</url-pattern> -->
         <url-pattern>/api/public/v1/*</url-pattern>
     </servlet-mapping>
-
 
 
     <resource-ref>

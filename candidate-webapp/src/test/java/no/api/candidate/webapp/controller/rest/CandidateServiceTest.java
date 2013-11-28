@@ -59,7 +59,7 @@ public class CandidateServiceTest {
         System.out.println("JSON input:"+cjson);
         MvcResult result = mockMvc
                 .perform(
-                        post("/save")
+                        post("/candidate")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(cjson)).andDo(print()) // print the
@@ -83,7 +83,7 @@ public class CandidateServiceTest {
 
         result = mockMvc
                 .perform(
-                        post("/save")
+                        post("/candidate")
                                 .contentType(MediaType.APPLICATION_XML)
                                 .content(xml.getBytes())).andDo(print()) // print the
                         // request/response
@@ -93,15 +93,15 @@ public class CandidateServiceTest {
 
 
         json = result.getResponse().getContentAsString();
-        c1 = mapper.readValue(json, CandidateTransport.class);
-        Assert.assertNotNull(c1.getId());
+        CandidateTransport  c11 = mapper.readValue(json, CandidateTransport.class);
+        Assert.assertNotNull(c11.getId());
 
 
 		// load json from rest
 		result = mockMvc
 				.perform(
 						get(
-								"/load/json/" + c1.getUuid()).accept(
+								"/candidate/" + c1.getUuid()).accept(
 								MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
 		json = result.getResponse().getContentAsString();
@@ -110,18 +110,36 @@ public class CandidateServiceTest {
 				.readValue(json, CandidateTransport.class);
 		Assert.assertEquals(c1.getUuid(), c2.getUuid());
 
-        // load json with partial responses from rest
-        //to include specific fields
+        // load xml from rest
         result = mockMvc
                 .perform(
                         get(
-                                "/query/json/" + c1.getUuid()+"?fields=(name,age)").accept(
+                                "/candidate/" + c1.getUuid()).accept(
+                                MediaType.APPLICATION_XML)).andDo(print())
+                .andReturn();
+        xml = result.getResponse().getContentAsString();
+
+        CandidateTransport c22 = (CandidateTransport)xstream.fromXML(xml);
+        Assert.assertEquals(c1.getUuid(), c22.getUuid());
+
+
+
+        // load json with partial responses from rest
+        //to include specific fields
+
+        result = mockMvc
+                .perform(
+                        get(
+                                "/candidate/" + c1.getUuid()+"?fields=(name,age)").accept(
                                 MediaType.APPLICATION_JSON)).andDo(print())
                 .andReturn();
         json = result.getResponse().getContentAsString();
 
         CandidateTransport c23 = mapper
                 .readValue(json, CandidateTransport.class);
+
+
+        System.out.println("partial"+json);
         Assert.assertEquals(c1.getName(), c23.getName());
         Assert.assertEquals(c1.getAge(), c23.getAge());
         Assert.assertNull(c23.getUuid());
@@ -130,7 +148,7 @@ public class CandidateServiceTest {
         result = mockMvc
                 .perform(
                         get(
-                                "/query/json/" + c1.getUuid()+"?fields=!(name,age)").accept(
+                                "/candidate/" + c1.getUuid()+"?fields=!(name,age)").accept(
                                 MediaType.APPLICATION_JSON)).andDo(print())
                 .andReturn();
         json = result.getResponse().getContentAsString();
@@ -141,17 +159,6 @@ public class CandidateServiceTest {
         Assert.assertNull(c24.getName());
         Assert.assertNull(c24.getAge());
 
-        // load xml from rest
-        result = mockMvc
-                .perform(
-                        get(
-                                "/load/xml/" + c1.getUuid()).accept(
-                                MediaType.APPLICATION_XML)).andDo(print())
-                .andReturn();
-        xml = result.getResponse().getContentAsString();
-
-        CandidateTransport c22 = (CandidateTransport)xstream.fromXML(xml);
-        Assert.assertEquals(c1.getUuid(), c22.getUuid());
 
 
         // load xml with partial responses from rest
@@ -159,7 +166,7 @@ public class CandidateServiceTest {
         result = mockMvc
                 .perform(
                         get(
-                                "/query/xml/" + c1.getUuid()+"?fields=(name,age)").accept(
+                                "/candidate/" + c1.getUuid()+"?fields=(name,age)").accept(
                                 MediaType.APPLICATION_XML)).andDo(print())
                 .andReturn();
         xml = result.getResponse().getContentAsString();
@@ -173,7 +180,7 @@ public class CandidateServiceTest {
         result = mockMvc
                 .perform(
                         get(
-                                "/query/xml/" + c1.getUuid()+"?fields=!(name,age)").accept(
+                                "/candidate/" + c1.getUuid()+"?fields=!(name,age)").accept(
                                 MediaType.APPLICATION_XML)).andDo(print())
                 .andReturn();
         xml = result.getResponse().getContentAsString();
@@ -186,10 +193,11 @@ public class CandidateServiceTest {
 
 
         // delete from rest by uuid
+
         result = mockMvc
                 .perform(
-                        get(
-                                "/delete/" + c1.getUuid()).accept(
+                        delete(
+                                "/candidate/" + c11.getUuid()).accept(
                                 MediaType.APPLICATION_JSON)).andDo(print())
                 .andReturn();
         json = result.getResponse().getContentAsString();
@@ -199,13 +207,14 @@ public class CandidateServiceTest {
         Assert.assertNull(c27.getUuid());
 
 
+
 		// garbage to json rest
 		c = new CandidateTransport();
         cjson = candidateTransportMapper.convertToJsonString(c);
 		//cjson = mapper.writeValueAsString(c);
 		result = mockMvc
 				.perform(
-						post("/save")
+						post("/candidate")
 								.contentType(MediaType.APPLICATION_JSON)
 								.accept(MediaType.APPLICATION_JSON)
 								.content(cjson)).andDo(print()).andReturn();
@@ -226,7 +235,7 @@ public class CandidateServiceTest {
 
         result = mockMvc
                 .perform(
-                        post("/save")
+                        post("/candidate")
                                 .contentType(MediaType.APPLICATION_XML)
                                 .content(xml.getBytes())).andDo(print()) // print the
                         // request/response
@@ -249,7 +258,7 @@ public class CandidateServiceTest {
 		System.out.println(cjson);
 
 		mockMvc.perform(
-				put("/upload/image/"+c1.getUuid())
+				put("/candidate/"+c1.getUuid()+"/image")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)
 				.content(cjson))
