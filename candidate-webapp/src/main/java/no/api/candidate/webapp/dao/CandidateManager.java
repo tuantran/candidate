@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import no.api.candidate.webapp.model.CandidateModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CandidateManager {
     
@@ -24,6 +27,17 @@ public class CandidateManager {
         log.debug("Saving candidate: "+candidate.getName());
        return candidateDAO.save(candidate);
     }
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public Long delete(Long id){
+        log.debug("Delete candidate with database id: "+id);
+        return candidateDAO.delete(id);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public String deleteByUuid(String uuid){
+        log.debug("Delete candidate with database uuid: "+uuid);
+        return candidateDAO.deleteByUuid(uuid);
+    }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public CandidateModel load(Long id){
@@ -36,4 +50,15 @@ public class CandidateManager {
         log.debug("Loading candidate from database uuid: "+uuid);
         return candidateDAO.loadByUuid(uuid);
     }
+    /*
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<CandidateModel> loadAll() {
+        log.debug("Loading all candidates from database");
+        List<CandidateModel> candidates = new ArrayList<CandidateModel>();
+        candidates=candidateDAO.loadAll();
+        return candidates;
+    }
+    */
+
+
 }

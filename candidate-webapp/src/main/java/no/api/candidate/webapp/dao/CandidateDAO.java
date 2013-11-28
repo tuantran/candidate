@@ -5,22 +5,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.UUID;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import no.api.candidate.webapp.model.CandidateModel;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
 
 @Repository
 public class CandidateDAO {
@@ -64,6 +70,15 @@ public class CandidateDAO {
         	return null;
         }
     }
+    public Long delete(Long id) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("DELETE FROM ");
+        sql.append(TABLE_NAME);
+        sql.append(" WHERE id=?");
+        log.debug("Executing sql: "+sql.toString());
+        jdbcTemplate.update(sql.toString(),id);
+        return id;
+    }
 
     public CandidateModel loadByUuid(String uuid) {
         StringBuffer sql = new StringBuffer();
@@ -75,13 +90,68 @@ public class CandidateDAO {
         RowMapper<CandidateModel> mapper = new CandidateModelRowMapper();
         log.debug("Executing sql: "+sql.toString());
         try {
-        	return jdbcTemplate.queryForObject(sql.toString(), mapper, uuid);
+        	return jdbcTemplate.queryForObject(sql.toString(), mapper,uuid);
         }
         catch (EmptyResultDataAccessException e) {
         	log.warn("Empty result for uuid {}", uuid);
         	return null;
         }
     }
+
+    public String deleteByUuid(String uuid) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("DELETE FROM ");
+        sql.append(TABLE_NAME);
+        sql.append(" WHERE uuid=?");
+        log.debug("Executing sql: "+sql.toString());
+        jdbcTemplate.update(sql.toString(),uuid);
+        return uuid;
+    }
+
+   /* public List<CandidateModel> loadAll() {
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT ");
+        sql.append(getColumns(0, false));
+        sql.append(" FROM  ");
+        sql.append(TABLE_NAME);
+        //  sql.append(" WHERE uuid = ?");
+       // RowMapper<CandidateModel> mapper = new CandidateModelRowMapper();
+        log.debug("Executing sql: "+sql.toString());
+
+       List<CandidateModel> candidates = new ArrayList<CandidateModel>();
+       // candidates = jdbcTemplate.query( sql.toString(), new BeanPropertyRowMapper(CandidateModel.class));
+       // return candidates;
+
+        try {
+            List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql.toString());
+            for (Map row : rows) {
+                CandidateModel candidate = new CandidateModel();
+                candidate.setId((Long)(row.get("id")));
+                candidate.setAge((Integer) (row.get("age")));
+
+               // System.out.println("datetime:"+row.get("createdtime"));
+
+               // String value = row.get("createdtime").toString();
+               // String pattern = "dd-MMM-yy hh.mm.ss aa";
+               // Date date=new Date(value);
+
+
+                candidate.setGender((String) (row.get("gender")));
+               // candidate.setModifiedTime(new DateTime(row.get("modifiedtime")));
+                candidate.setName((String)(row.get("name")));
+                candidate.setUuid((String) (row.get("uuid")));
+                candidates.add(candidate);
+            }
+
+            return candidates;
+        }
+        catch (EmptyResultDataAccessException e) {
+            log.warn("Empty result");
+            return null;
+        }
+
+    }
+    */
 
     private CandidateModel add(CandidateModel candidateModel) {
         CandidateModel candidateModelResult = candidateModel;
@@ -104,6 +174,7 @@ public class CandidateDAO {
                 candidateModel.getAge(), candidateModel.getGender(), candidateModel.getCreatedTime().getMillis(),candidateModel.getModifiedTime().getMillis(), candidateModel.getId());
         return candidateModel;
     }
+
 
     private static String getColumns(int i, boolean forUpdate) {
         StringBuffer sql = new StringBuffer();    

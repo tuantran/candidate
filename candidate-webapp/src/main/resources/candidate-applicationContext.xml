@@ -5,13 +5,12 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-
-	<!-- Adding annotation support -->
-	<mvc:annotation-driven />
-
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
+    <!--<mvc:annotation-driven />  -->
+    <context:property-placeholder location="classpath:swagger.properties" />
 	<context:component-scan
 		base-package="
 		no.api.candidate.webapp.controller
@@ -29,5 +28,28 @@
 	</bean>
 	<!-- #END ViewResolver and MVC related stuffs -->
 
+    <!-- Swagger Configuration -->
+    <bean id="documentationConfig" class="no.api.candidate.webapp.config.CustomDocumentationConfig"/>
+    <!-- Custom extensibility module (bean) Has override methods to customize the document generation-->
+    <bean id="extensibilityModule" class="no.api.candidate.webapp.config.ExampleExtensibilityModule" />
+    <!-- #END Swagger -->
 
+    <!--Content Type Negotiation Configuration -->
+    <bean id="contentNegotiationManager"
+          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="false" />
+        <property name="favorParameter" value="true" />
+        <property name="parameterName" value="mediaType" />
+        <property name="ignoreAcceptHeader" value="false"/>
+        <property name="useJaf" value="false"/>
+        <property name="defaultContentType" value="application/xml" />
+
+        <property name="mediaTypes">
+            <map>
+                <entry key="json" value="application/json" />
+                <entry key="xml" value="application/xml" />
+            </map>
+        </property>
+    </bean>
+    <!--END Content type negotiation-->
 </beans>

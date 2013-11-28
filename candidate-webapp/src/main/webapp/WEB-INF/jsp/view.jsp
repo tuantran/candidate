@@ -22,7 +22,7 @@
 		<div>
 			<h2>Name: ${candidate.name}</h2>
 			<br />
-			<img alt="candidate" src="image/${candidate.modifiedTime.millis}/${candidate.uuid}.image">
+			<img alt="candidate" src="api/public/v1/candidates/${candidate.uuid}/image/${candidate.modifiedTime.millis}">
 			<h3>Name: ${candidate.name}</h3>
 			<h3>Age: ${candidate.age}</h3>
 			<h3>Uuid: ${candidate.uuid}</h3>

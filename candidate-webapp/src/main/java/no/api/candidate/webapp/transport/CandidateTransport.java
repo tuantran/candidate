@@ -1,18 +1,32 @@
 package no.api.candidate.webapp.transport;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonFilter;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonFilter("candidateFilter")
+
 public class CandidateTransport extends BaseTransport {
-    
+
     private Long id;
+
     private String uuid;
+
     private String name;
+
     private Integer age;
+
     private String gender;
+
     private Long createdTime;
+
     private Long modifiedTime;
-    
+
+    public CandidateTransport() {
+    }
     public Long getId() {
         return id;
     }

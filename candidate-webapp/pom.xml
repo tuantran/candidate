@@ -32,7 +32,7 @@
                 <configuration>
                     <jettyEnvXml>jetty/jetty-env.xml</jettyEnvXml>
                     <jettyConfig>jetty/jetty.xml</jettyConfig>
-                    <contextPath>/candidate</contextPath>
+                    <contextPath>/registration</contextPath>
                     <scanIntervalSeconds>${scan.interval.seconds}</scanIntervalSeconds>
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
@@ -125,6 +125,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
             <scope>provided</scope>
         </dependency>
 
@@ -198,11 +199,33 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
         </dependency>
-        
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.5</version>
+        </dependency>
          <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
           </dependency>
+
+        <!--swagger-->
+
+        <dependency>
+            <groupId>com.mangofactory</groupId>
+            <artifactId>swagger-springmvc</artifactId>
+            <version>0.6.5</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- END Apache Common -->
         <!-- ################################# -->
