@@ -26,7 +26,7 @@ public class CandidateMediaController {
 	@Autowired
 	private CandidateManager candidateManager;
 	
-	@RequestMapping("/candidate/{uuid}/image/{lastModifiedTime}")
+	@RequestMapping("/candidates/{uuid}/image/{lastModifiedTime}")
     @ApiOperation(value = "View candidate image")
 	public String loadMedia(HttpServletResponse response,
 			@PathVariable String uuid, @PathVariable Long lastModifiedTime) throws IOException {

@@ -45,7 +45,7 @@ public class CandidateService {
     @Autowired
     private CandidateMediaTransportMapper candidateMediaTransportMapper;
 
-    @RequestMapping(value="/candidate",method = RequestMethod.POST, produces="application/json", consumes="application/json")
+    @RequestMapping(value="/candidates",method = RequestMethod.POST, produces="application/json", consumes="application/json")
     @ApiOperation(value = "CREATE a new candidate with JSON format")
     @ResponseBody
     public String saveCandidateFromJSON(@RequestBody CandidateTransport candidateTransport) throws IOException {
@@ -67,7 +67,7 @@ public class CandidateService {
         return json;
     }
 
-    @RequestMapping(value="/candidate",method = RequestMethod.POST, produces="application/json", consumes="application/xml")
+    @RequestMapping(value="/candidates",method = RequestMethod.POST, produces="application/json", consumes="application/xml")
     @ApiOperation(value = "CREATE a new candidate with XML format")
     @ResponseBody
     public String saveCandidateFromXML(@RequestBody CandidateTransport candidateTransport) throws IOException {
@@ -88,7 +88,7 @@ public class CandidateService {
 
 
 
-    @RequestMapping(value="/candidate/{uuid}",method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value="/candidates/{uuid}",method = RequestMethod.GET, produces="application/json")
     @ApiOperation(value = "READ candidate in JSON format by using UUID")
     @ResponseBody
     public String loadCandidate(@PathVariable String uuid) throws IOException {
@@ -109,7 +109,7 @@ public class CandidateService {
         return json;
     }
 
-    @RequestMapping(value="/candidate/{uuid}",method = RequestMethod.GET, produces="application/xml")
+    @RequestMapping(value="/candidates/{uuid}",method = RequestMethod.GET, produces="application/xml")
     @ApiOperation(value = "READ candidate in XML format by using UUID")
     @ResponseBody
     public String loadXMLCandidate(@PathVariable String uuid) throws IOException {
@@ -129,7 +129,7 @@ public class CandidateService {
         return xml;
     }
 
-    @RequestMapping(value="/candidate/{uuid}",method = RequestMethod.DELETE,produces="application/json")
+    @RequestMapping(value="/candidates/{uuid}",method = RequestMethod.DELETE,produces="application/json")
     @ApiOperation(value = "DELETE candidate by using UUID")
     @ResponseBody
     public String deleteCandidate(@PathVariable String uuid) throws IOException {
@@ -171,7 +171,7 @@ public class CandidateService {
     }
     */
 
-    @RequestMapping(value="/candidate/{uuid}",params ={"fields"},method=RequestMethod.GET,produces="application/json")
+    @RequestMapping(value="/candidates/{uuid}",params ={"fields"},method=RequestMethod.GET,produces="application/json")
     @ApiOperation(value = "READ partial responses of candidate in JSON format by using UUID")
     @ResponseBody
     public String loadCandidateFilter(@PathVariable String uuid,@RequestParam("fields") String fields) throws IOException {
@@ -192,7 +192,7 @@ public class CandidateService {
         return json;
     }
 
-    @RequestMapping(value="/candidate/{uuid}",params ={"fields"},method=RequestMethod.GET,produces="application/xml")
+    @RequestMapping(value="/candidates/{uuid}",params ={"fields"},method=RequestMethod.GET,produces="application/xml")
     @ApiOperation(value = "READ partial responses of candidate in XML format by using UUID")
     @ResponseBody
     public String loadXMLCandidateFilter(@PathVariable String uuid,@RequestParam("fields") String fields) throws IOException {
@@ -212,7 +212,7 @@ public class CandidateService {
         return xml;
     }
 
-    @RequestMapping(value="/candidate/{uuid}/image",method = RequestMethod.PUT, produces="application/json", consumes="application/json")
+    @RequestMapping(value="/candidates/{uuid}/image",method = RequestMethod.PUT, produces="application/json", consumes="application/json")
     @ApiOperation(value = "UPDATE candidate image")
     @ResponseBody
     public CandidateMediaTransport uploadImageCandidate(@PathVariable String uuid, @RequestBody CandidateMediaTransport candidateMediaTransport) {

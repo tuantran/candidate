@@ -59,7 +59,7 @@ public class CandidateServiceTest {
         System.out.println("JSON input:"+cjson);
         MvcResult result = mockMvc
                 .perform(
-                        post("/candidate")
+                        post("/candidates")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(cjson)).andDo(print()) // print the
@@ -83,7 +83,7 @@ public class CandidateServiceTest {
 
         result = mockMvc
                 .perform(
-                        post("/candidate")
+                        post("/candidates")
                                 .contentType(MediaType.APPLICATION_XML)
                                 .content(xml.getBytes())).andDo(print()) // print the
                         // request/response
@@ -101,7 +101,7 @@ public class CandidateServiceTest {
 		result = mockMvc
 				.perform(
 						get(
-								"/candidate/" + c1.getUuid()).accept(
+								"/candidates/" + c1.getUuid()).accept(
 								MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
 		json = result.getResponse().getContentAsString();
@@ -114,7 +114,7 @@ public class CandidateServiceTest {
         result = mockMvc
                 .perform(
                         get(
-                                "/candidate/" + c1.getUuid()).accept(
+                                "/candidates/" + c1.getUuid()).accept(
                                 MediaType.APPLICATION_XML)).andDo(print())
                 .andReturn();
         xml = result.getResponse().getContentAsString();
@@ -130,7 +130,7 @@ public class CandidateServiceTest {
         result = mockMvc
                 .perform(
                         get(
-                                "/candidate/" + c1.getUuid()+"?fields=(name,age)").accept(
+                                "/candidates/" + c1.getUuid()+"?fields=(name,age)").accept(
                                 MediaType.APPLICATION_JSON)).andDo(print())
                 .andReturn();
         json = result.getResponse().getContentAsString();
@@ -148,7 +148,7 @@ public class CandidateServiceTest {
         result = mockMvc
                 .perform(
                         get(
-                                "/candidate/" + c1.getUuid()+"?fields=!(name,age)").accept(
+                                "/candidates/" + c1.getUuid()+"?fields=!(name,age)").accept(
                                 MediaType.APPLICATION_JSON)).andDo(print())
                 .andReturn();
         json = result.getResponse().getContentAsString();
@@ -166,7 +166,7 @@ public class CandidateServiceTest {
         result = mockMvc
                 .perform(
                         get(
-                                "/candidate/" + c1.getUuid()+"?fields=(name,age)").accept(
+                                "/candidates/" + c1.getUuid()+"?fields=(name,age)").accept(
                                 MediaType.APPLICATION_XML)).andDo(print())
                 .andReturn();
         xml = result.getResponse().getContentAsString();
@@ -180,7 +180,7 @@ public class CandidateServiceTest {
         result = mockMvc
                 .perform(
                         get(
-                                "/candidate/" + c1.getUuid()+"?fields=!(name,age)").accept(
+                                "/candidates/" + c1.getUuid()+"?fields=!(name,age)").accept(
                                 MediaType.APPLICATION_XML)).andDo(print())
                 .andReturn();
         xml = result.getResponse().getContentAsString();
@@ -197,7 +197,7 @@ public class CandidateServiceTest {
         result = mockMvc
                 .perform(
                         delete(
-                                "/candidate/" + c11.getUuid()).accept(
+                                "/candidates/" + c11.getUuid()).accept(
                                 MediaType.APPLICATION_JSON)).andDo(print())
                 .andReturn();
         json = result.getResponse().getContentAsString();
@@ -214,7 +214,7 @@ public class CandidateServiceTest {
 		//cjson = mapper.writeValueAsString(c);
 		result = mockMvc
 				.perform(
-						post("/candidate")
+						post("/candidates")
 								.contentType(MediaType.APPLICATION_JSON)
 								.accept(MediaType.APPLICATION_JSON)
 								.content(cjson)).andDo(print()).andReturn();
@@ -235,7 +235,7 @@ public class CandidateServiceTest {
 
         result = mockMvc
                 .perform(
-                        post("/candidate")
+                        post("/candidates")
                                 .contentType(MediaType.APPLICATION_XML)
                                 .content(xml.getBytes())).andDo(print()) // print the
                         // request/response
@@ -258,7 +258,7 @@ public class CandidateServiceTest {
 		System.out.println(cjson);
 
 		mockMvc.perform(
-				put("/candidate/"+c1.getUuid()+"/image")
+				put("/candidates/"+c1.getUuid()+"/image")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)
 				.content(cjson))
