@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @Api(value="", description="View Candidate Photo")
@@ -25,8 +26,7 @@ public class CandidateMediaController {
 	
 	@Autowired
 	private CandidateManager candidateManager;
-	
-	@RequestMapping("/candidates/{uuid}/image/{lastModifiedTime}")
+    @RequestMapping(value="/candidates/{uuid}/image/{lastModifiedTime}",method= RequestMethod.GET)
     @ApiOperation(value = "View candidate image")
 	public String loadMedia(HttpServletResponse response,
 			@PathVariable String uuid, @PathVariable Long lastModifiedTime) throws IOException {

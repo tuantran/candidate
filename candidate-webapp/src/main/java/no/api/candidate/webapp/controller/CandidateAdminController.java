@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -19,18 +20,18 @@ public class CandidateAdminController {
 	@Autowired
 	private CandidateManager candidateManager;
 	
-	@RequestMapping(value="/view.html")
+	@RequestMapping(value="/view.html",method= RequestMethod.GET)
     @ApiOperation(value = "View candidate information")
 	public String viewCandidate(@RequestParam String uuid,Model model) {
 		CandidateModel candidate = candidateManager.loadByUuid(uuid);
 		model.addAttribute("candidate", candidate);
 		return "view";
 	}
-   /*
-    @RequestMapping(value="/docs")
+
+    @RequestMapping(value="/docs",method=RequestMethod.GET)
     @ApiOperation(value = "View API Documentation by Swagger API")
     public String viewDocument() {
-        return "doc";
+        return "swagger";
     }
-    */
+
 }
